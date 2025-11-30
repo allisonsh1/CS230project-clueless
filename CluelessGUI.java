@@ -271,14 +271,14 @@ public class CluelessGUI extends JFrame {
     }
 
     private void seedCloset() {
-        closet.addTop(new Top("Black Shirt", "black", "solid", "warm", 
-            "images/black_shirt.png", "short"));
-        closet.addTop(new Top("Green Shirt", "green", "solid", "warm", 
-            "images/green_shirt.png", "short"));
-        closet.addBottom(new Bottom("Blue Jeans", "blue", "denim", "warm", 
-            "images/blue_jeans.png", "full"));
-        closet.addBottom(new Bottom("Khaki Pants", "khaki", "solid", "warm", 
-            "images/khaki_pants.png", "full"));
+        closet.addTop(new Top("Black Graphic", "black", "solid", "warm", 
+            "images/black_graphic.jpeg", "short"));
+        closet.addTop(new Top("Red Graphic", "green", "solid", "warm", 
+            "images/red_graphic.jpeg", "short"));
+        closet.addBottom(new Bottom("Blue Sweats", "blue", "denim", "warm", 
+            "images/blue_sweats.jpeg", "full"));
+        closet.addBottom(new Bottom("Dark Jeans", "khaki", "solid", "warm", 
+            "images/dark_jeans.jpeg", "full"));
     }
 
     public static void main(String[] args) {
