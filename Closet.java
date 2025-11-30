@@ -52,4 +52,8 @@ public class Closet {
         expand();
         addBottom(b);
     }
+
+    public Clothing[][] getArray() {
+        return closet;
+    }
 }
