@@ -7,6 +7,7 @@ public class CluelessGUI extends JFrame {
     private Closet closet;
     private CircularArrayQueue<Top> topQueue;
     private CircularArrayQueue<Bottom> bottomQueue;
+    private OutfitHistory outfitHistory;
     private Top currentTop;
     private Bottom currentBottom;
     private JLabel topImageLabel;
@@ -14,12 +15,14 @@ public class CluelessGUI extends JFrame {
     private JLabel topInfoLabel;
     private JLabel bottomInfoLabel;
     private JLabel outfitLabel = new JLabel("Select a top and bottom to create an outfit");
+    private JTextArea historyDisplay;
 
     public CluelessGUI() {
         super("Cher's Clueless Closet");
         closet = new Closet(8);
         topQueue = new CircularArrayQueue<>();
         bottomQueue = new CircularArrayQueue<>();
+        outfitHistory = new OutfitHistory();
         seedCloset();
         loadQueues();
 
@@ -34,12 +37,17 @@ public class CluelessGUI extends JFrame {
         
         mainPanel.add(makeCarouselPanel(), BorderLayout.CENTER);
         mainPanel.add(makeControlPanel(), BorderLayout.SOUTH);
+        mainPanel.add(makeHistoryPanel(), BorderLayout.EAST);
 
         add(mainPanel, BorderLayout.CENTER);
         
         // Set initial display
-        if (!topQueue.isEmpty()) currentTop = topQueue.first();
-        if (!bottomQueue.isEmpty()) currentBottom = bottomQueue.first();
+        try {
+            if (!topQueue.isEmpty()) currentTop = topQueue.first();
+            if (!bottomQueue.isEmpty()) currentBottom = bottomQueue.first();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         updateCarousels();
     }
 
@@ -130,20 +138,28 @@ public class CluelessGUI extends JFrame {
 
     private void navigateTop() {
         if (topQueue.isEmpty()) return;
-        // Dequeue current, enqueue it at back to rotate
-        Top item = topQueue.dequeue();
-        topQueue.enqueue(item);
-        currentTop = topQueue.first();
-        updateCarousels();
+        try {
+            // Dequeue current, enqueue it at back to rotate
+            Top item = topQueue.dequeue();
+            topQueue.enqueue(item);
+            currentTop = topQueue.first();
+            updateCarousels();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void navigateBottom() {
         if (bottomQueue.isEmpty()) return;
-        // Dequeue current, enqueue it at back to rotate
-        Bottom item = bottomQueue.dequeue();
-        bottomQueue.enqueue(item);
-        currentBottom = bottomQueue.first();
-        updateCarousels();
+        try {
+            // Dequeue current, enqueue it at back to rotate
+            Bottom item = bottomQueue.dequeue();
+            bottomQueue.enqueue(item);
+            currentBottom = bottomQueue.first();
+            updateCarousels();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void updateCarousels() {
@@ -199,10 +215,59 @@ public class CluelessGUI extends JFrame {
     }
 
     private JPanel makeControlPanel() {
-        JPanel p = new JPanel(new GridLayout(2,1,4,4));
+        JPanel p = new JPanel(new GridLayout(3,1,4,4));
         p.setBackground(new Color(255, 240, 245));
+        
+        JButton saveOutfitBtn = new JButton("💾 Save Current Outfit");
+        saveOutfitBtn.setFont(new Font("Arial", Font.BOLD, 14));
+        saveOutfitBtn.addActionListener(e -> saveCurrentOutfit());
+        
+        p.add(saveOutfitBtn);
         p.add(outfitLabel);
         return p;
+    }
+    
+    private JPanel makeHistoryPanel() {
+        JPanel panel = new JPanel(new BorderLayout(5,5));
+        panel.setBackground(Color.WHITE);
+        panel.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(200, 100, 200), 2),
+            new EmptyBorder(10,10,10,10)));
+        panel.setPreferredSize(new Dimension(250, 0));
+        
+        JLabel title = new JLabel("Outfit History (Last 7)", SwingConstants.CENTER);
+        title.setFont(new Font("Arial", Font.BOLD, 14));
+        title.setForeground(new Color(150, 50, 150));
+        
+        historyDisplay = new JTextArea();
+        historyDisplay.setEditable(false);
+        historyDisplay.setFont(new Font("Arial", Font.PLAIN, 11));
+        historyDisplay.setText("No outfits saved yet!");
+        historyDisplay.setLineWrap(true);
+        historyDisplay.setWrapStyleWord(true);
+        
+        JScrollPane scroll = new JScrollPane(historyDisplay);
+        
+        panel.add(title, BorderLayout.NORTH);
+        panel.add(scroll, BorderLayout.CENTER);
+        
+        return panel;
+    }
+    
+    private void saveCurrentOutfit() {
+        if (currentTop == null || currentBottom == null) {
+            JOptionPane.showMessageDialog(this, "Please select both a top and bottom first!");
+            return;
+        }
+        
+        Outfit newOutfit = new Outfit(currentTop, currentBottom);
+        outfitHistory.addOutfit(newOutfit);
+        updateHistoryDisplay();
+        JOptionPane.showMessageDialog(this, "Outfit saved! ✨");
+    }
+    
+    private void updateHistoryDisplay() {
+        historyDisplay.setText(outfitHistory.getHistoryDisplay());
     }
 
     private void seedCloset() {
