@@ -1,7 +1,10 @@
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import java.awt.*;
+
 import javafoundations.CircularArrayQueue;
+
+import java.awt.*;
+//import javafoundations.CircularArrayQueue;
 
 public class CluelessGUI extends JFrame {
 private Closet closet;
@@ -15,7 +18,7 @@ private JLabel bottomInfoLabel;
 private JLabel outfitLabel = new JLabel("Select a top and bottom to create an outfit");
 private JTextArea historyDisplay;
 
-public CluelessGUI() {
+public CluelessGUI(boolean shouldLoadHistory) {
     super("Cher's Clueless Closet");
     closet = new Closet(8);
     outfitHistory = new OutfitHistory();
@@ -37,6 +40,11 @@ public CluelessGUI() {
 
     add(mainPanel, BorderLayout.CENTER);
     
+    //UNSURE IF THIS IS RIGHT
+    if(shouldLoadHistory){
+        loadSavedHistory();
+    }
+
     updateCarousels();
 }
 
@@ -46,7 +54,31 @@ private void loadQueues() {
     bottomCarousel = new Carousel(closet, 1);  // row 1 = bottoms
 }
 
-
+private void loadSavedHistory() {
+        try {
+            SavingHistory savedHistory = new SavingHistory();
+            CircularArrayQueue<Outfit> savedOutfits = savedHistory.readHistory();
+            
+            System.out.println("Loaded " + savedOutfits.size() + " outfits from history");
+            
+            // Add each saved outfit to the outfit history
+            while (!savedOutfits.isEmpty()) {
+                Outfit outfit = savedOutfits.dequeue();
+                outfitHistory.addOutfit(outfit);
+                System.out.println("Added outfit: " + outfit.toString());
+            }
+            
+            updateHistoryDisplay();
+            System.out.println("History display updated");
+        } catch (Exception e) {
+            System.err.println("Error loading history: " + e.getMessage());
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, 
+                "Could not load previous history: " + e.getMessage(), 
+                "Load Error", 
+                JOptionPane.WARNING_MESSAGE);
+        }
+    }
 
 private JPanel makeCarouselPanel() {
     JPanel panel = new JPanel(new GridLayout(2, 1, 10, 10));
@@ -190,8 +222,13 @@ private JPanel makeControlPanel() {
     JButton saveOutfitBtn = new JButton("💾 Save Current Outfit");
     saveOutfitBtn.setFont(new Font("Arial", Font.BOLD, 14));
     saveOutfitBtn.addActionListener(e -> saveCurrentOutfit());
-    
-    p.add(saveOutfitBtn);
+    JButton saveAndExitBtn = new JButton("💾 Save & Exit");
+    saveAndExitBtn.setFont(new Font("Arial", Font.BOLD, 14));
+    saveAndExitBtn.setBackground(new Color(200, 150, 250));
+    saveAndExitBtn.addActionListener(e -> saveAndExit());
+        
+        p.add(saveOutfitBtn);
+        p.add(saveAndExitBtn);
     p.add(outfitLabel);
     return p;
 }
@@ -234,6 +271,39 @@ private void saveCurrentOutfit() {
     updateHistoryDisplay();
     JOptionPane.showMessageDialog(this, "Outfit saved! ✨");
 }
+
+private void saveAndExit() {
+        try {
+            // Get the history queue from OutfitHistory
+            CircularArrayQueue<Outfit> historyQueue = getHistoryQueue();
+            SavingHistory savingHistory = new SavingHistory();
+            // Save to file
+            savingHistory.saveHistory(historyQueue);
+            
+            JOptionPane.showMessageDialog(this, 
+                "All outfits saved successfully! 👗✨\nSee you next time!", 
+                "Saved", 
+                JOptionPane.INFORMATION_MESSAGE);
+            
+            // Exit the application
+            System.exit(0);
+            
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Error saving history: " + e.getMessage(), 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
+//NOT SURE WHAT THIS IS YET
+    private CircularArrayQueue<Outfit> getHistoryQueue() {
+        // Access the internal queue from OutfitHistory
+        // You'll need to add a getter method in OutfitHistory class
+        return outfitHistory.getHistory();
+    }
+
 
 private void updateHistoryDisplay() {
     historyDisplay.setText(outfitHistory.getHistoryDisplay());
@@ -301,7 +371,7 @@ private void seedCloset() {
 
 public static void main(String[] args) {
     SwingUtilities.invokeLater(() -> {
-        CluelessGUI gui = new CluelessGUI();
+        CluelessGUI gui = new CluelessGUI(true);
         gui.setVisible(true);
     });
 }
