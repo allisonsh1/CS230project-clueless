@@ -80,4 +80,33 @@ public class OutfitHistory {
     public boolean isEmpty() {
         return history.isEmpty();
     }
+
+    //NEW EDITS
+
+    public CircularArrayQueue<Outfit> getHistory() {
+        return history;
+    }
+
+
+    public static void main(String[] args)throws Exception {
+        //TEST CODE FOR SAVING TO FILE
+        /*Top top1 = new Top("T-Shirt", "Red", "Solid", "Summer", "path/to/image1.jpg", "Short");
+        Bottom bottom1 = new Bottom("Jeans", "Blue", "Solid", "All", "path/to/image2.jpg", "Long");
+        Outfit outfit1 = new Outfit(top1, bottom1);
+        OutfitHistory outfitHistory = new OutfitHistory();
+        outfitHistory.addOutfit(outfit1);
+        SavingHistory savingHistory = new SavingHistory();
+
+        savingHistory.saveHistory(outfitHistory.getHistory()); 
+        */
+
+        //TEST CODE FOR READING FROM FILE
+        SavingHistory savingHistory = new SavingHistory();
+        CircularArrayQueue<Outfit> loadedHistory = savingHistory.readHistory();
+        OutfitHistory outfitHistory = new OutfitHistory();
+        while (!loadedHistory.isEmpty()) {
+            outfitHistory.addOutfit(loadedHistory.dequeue());
+        }
+        System.out.println(outfitHistory.getHistoryDisplay());
+    }
 }
