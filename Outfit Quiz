@@ -8,10 +8,12 @@ import javafoundations.LinkedBinaryTree; // for the LinkedBinaryTree and all
  * @version (a version number or a date)
  */
 public class OutfitQuiz
+
+//add linked binary tree to java foundations 
 {
     // instance variables - replace the example below with your own
     protected LinkedBinaryTree<String> dTree;
-    protected Array[] outfits;
+    protected Outfit[] outfits;
 
     /**
      * Constructor for objects of class AnimalExpert
