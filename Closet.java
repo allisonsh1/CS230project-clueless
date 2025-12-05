@@ -15,6 +15,9 @@ public class Closet {
         this.closet = new Clothing[2][maxCols];
     }
 
+    /**
+     * Increases the size of the closet by double.
+     */
     private void expand(){
         int newSize = maxCols*2;
         Clothing[][] newCloset = new Clothing[2][newSize];

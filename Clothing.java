@@ -27,6 +27,9 @@ public abstract class Clothing {
     public void setSeason(String season) { this.season = season; }
     public void setImagePath(String imagePath) { this.imagePath = imagePath; }
 
+    /**
+     * Returns a String representation of the clothing item.
+     */
     @Override
     public String toString() {
         return name + " (" + color + ", " + pattern + ", " + season + ")";
