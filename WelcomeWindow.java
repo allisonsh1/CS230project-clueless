@@ -7,7 +7,6 @@ import java.io.File;
  * Welcome screen that allows users to either start fresh or load saved history
  */
 public class WelcomeWindow extends JFrame {
-    private boolean loadHistory = false;
     
     public WelcomeWindow() {
         super("Welcome to Cher's Closet");
@@ -26,9 +25,17 @@ public class WelcomeWindow extends JFrame {
         JPanel titlePanel = new JPanel(new GridLayout(3, 1, 5, 5));
         titlePanel.setBackground(new Color(255, 240, 245));
         
-        JLabel titleLabel = new JLabel("✨ Cher's Clueless Closet ✨", SwingConstants.CENTER);
+       /* JLabel titleLabel = new JLabel("✨ Cher's Clueless Closet ✨", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
-        titleLabel.setForeground(new Color(150, 50, 150));
+        //titleLabel.setForeground(Color.BLACK);
+        titleLabel.setForeground(new Color(30, 30, 30)); // dark charcoal
+        */
+        
+        JLabel titleLabel = new JLabel("Cher's Clueless Closet", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        titleLabel.setForeground(new Color(115, 56, 133));
+        
+
         
         JLabel subtitleLabel = new JLabel("Your Digital Wardrobe Assistant", SwingConstants.CENTER);
         subtitleLabel.setFont(new Font("Arial", Font.ITALIC, 16));
@@ -81,7 +88,7 @@ public class WelcomeWindow extends JFrame {
         infoPanel.setBackground(new Color(255, 240, 245));
         
         JLabel infoLabel = new JLabel(
-            "<html><center><i>Tip: Your outfit history is automatically saved when you exit!</i></center></html>",
+            "<html><center><i>Tip: Save your outfit history to access it later!</i></center></html>",
             SwingConstants.CENTER
         );
         infoLabel.setFont(new Font("Arial", Font.PLAIN, 11));
@@ -133,8 +140,6 @@ public class WelcomeWindow extends JFrame {
      * Starts the main application with or without loading history
      */
     private void startApplication(boolean shouldLoadHistory) {
-        loadHistory = shouldLoadHistory;
-        
         // Close welcome window
         this.setVisible(false);
         this.dispose();
