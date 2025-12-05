@@ -15,17 +15,10 @@ public class Outfit {
     public void setOccasion(String occasion) { this.occasion = occasion; }
 
 
-    /**
-     * WORK IN PROGRESS!
-     * @return
-     */
     public boolean isMatch() {
         return false;
     }
 
-    /**
-     * Returns a String representation of the outfit.
-     */
     @Override
     public String toString() {
         return "Outfit: " + top + " + " + bottom + "(occasion: " + occasion + ")";

@@ -1,6 +1,5 @@
 public class ClosetDriver {
     
-    
     public static void main(String[] args) {
         System.out.println("!!!CLUELESS CLOSET CS230X!!!");
         
