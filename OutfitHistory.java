@@ -2,24 +2,21 @@ import javafoundations.CircularArrayQueue;
 
 /**
  * Manages a history of saved outfits using a CircularArrayQueue.
- * Maintains a maximum of 7 outfits, automatically removing the oldest
- * when capacity is reached.
+ * Maintains a maximum of 7 outfits and automatically removes the oldest when capacity is reached.
  */
 public class OutfitHistory {
     private CircularArrayQueue<Outfit> history;
     private static final int MAX_CAPACITY = 7;
     
     /**
-     * Constructor.
+     * Constructor for OutfitHistory class.
      */
     public OutfitHistory() {
         history = new CircularArrayQueue<>();
     }
     
     /**
-     * Adds an outfit to the history. If the history is at capacity,
-     * the oldest outfit is automatically removed.
-     * 
+     * Adds an outfit to the history. If the history is at capacity, the oldest outfit is automatically removed.
      * @param outfit The outfit to add
      */
     public void addOutfit(Outfit outfit) {
@@ -33,7 +30,6 @@ public class OutfitHistory {
     
     /**
      * Returns a formatted string of all outfits in the history.
-     * 
      * @return The outfit history
      */
     public String getHistoryDisplay() {
@@ -65,7 +61,6 @@ public class OutfitHistory {
     
     /**
      * Gets the number of outfits currently in history.
-     * 
      * @return The size of the history
      */
     public int size() {
@@ -74,15 +69,16 @@ public class OutfitHistory {
     
     /**
      * Checks if the history is empty.
-     * 
      * @return true if no outfits are saved
      */
     public boolean isEmpty() {
         return history.isEmpty();
     }
 
-    //NEW EDITS
-
+    /**
+     * Gets the outfit history queue.
+     * @return
+     */
     public CircularArrayQueue<Outfit> getHistory() {
         return history;
     }

@@ -5,6 +5,7 @@ import java.awt.*;
 
 /**
  * Popup window for Clausy, the outfit recommendation assistant
+ * @author Vivian & AI
  */
 public class ClausyPopup extends JDialog {
     private OutfitQuiz quiz;
@@ -17,6 +18,10 @@ public class ClausyPopup extends JDialog {
     private JPanel combinedButtonPanel;
     private CardLayout buttonCardLayout;
     
+    /**
+     * Constructor for ClausyPopup to create window
+     * @param parent
+     */
     public ClausyPopup(JFrame parent) {
         super(parent, "Clausy - Your Outfit Assistant", true);
         quiz = new OutfitQuiz();
@@ -28,6 +33,9 @@ public class ClausyPopup extends JDialog {
         initComponents();
     }
     
+    /**
+     * Initializes GUI components
+     */
     private void initComponents() {
         JPanel mainPanel = new JPanel(new BorderLayout(15, 15));
         mainPanel.setBackground(new Color(255, 240, 245));
@@ -156,11 +164,17 @@ public class ClausyPopup extends JDialog {
         startQuiz();
     }
     
+    /**
+     * Implements the decision tree traversal based on user answers
+     */
     private void startQuiz() {
         currentNode = quiz.dTree;
         displayCurrentNode();
     }
     
+    /**
+     * Displays the current question or recommendation
+     */
     private void displayCurrentNode() {
         if (currentNode == null) {
             questionArea.setText("Error: Quiz not initialized properly.");
@@ -169,18 +183,20 @@ public class ClausyPopup extends JDialog {
         
         String text = currentNode.getRootElement();
         
-        // Check if this is a leaf node (recommendation)
+        // Check if this is a leaf node
         if (currentNode.getLeft().isEmpty() && currentNode.getRight().isEmpty()) {
-            // This is a recommendation - show Start Over button
             questionArea.setText(text);
             buttonCardLayout.show(combinedButtonPanel, "STARTOVER");
         } else {
-            // This is a question - show Yes/No buttons
             questionArea.setText(text);
             buttonCardLayout.show(combinedButtonPanel, "YESNO");
         }
     }
     
+    /**
+     * Handles user answer and moves to next node
+     * @param isYes
+     */
     private void handleAnswer(boolean isYes) {
         if (isYes) {
             currentNode = currentNode.getLeft();

@@ -43,7 +43,6 @@ public class Carousel {
     
     /**
      * Gets the current clothing item.
-     * 
      * @return The current item.
      */
     public Clothing current() {
@@ -52,7 +51,6 @@ public class Carousel {
     
     /**
      * Gets the number of items in the carousel.
-     * 
      * @return The size of the carousel
      */
     public int size() {
@@ -60,8 +58,7 @@ public class Carousel {
     }
 
     /**
-     * Is the carousel empty?
-     * 
+     * Checks if the carousel is empty
      * @return true if the carousel has no items, false if it has anything
      */
     public boolean isEmpty() {
@@ -70,7 +67,6 @@ public class Carousel {
     
     /**
      * Returns a string representation of al items in the carousel
-     * 
      * @return String representation of the carousel
      */
     @Override

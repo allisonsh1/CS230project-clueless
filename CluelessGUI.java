@@ -3,6 +3,10 @@ import javax.swing.border.EmptyBorder;
 import javafoundations.CircularArrayQueue;
 import java.awt.*;
 
+/**
+ * Main GUI for Cher's Clueless Closet application.
+ * @author Allison, Vivian & AI
+ */
 public class CluelessGUI extends JFrame {
     private Closet closet;
     private Carousel topCarousel;
@@ -15,6 +19,10 @@ public class CluelessGUI extends JFrame {
     private JLabel outfitLabel = new JLabel("Select a top and bottom to create an outfit");
     private JTextArea historyDisplay;
 
+    /**
+     * Constructor for CluelessGUI
+     * @param shouldLoadHistory whether to load saved outfit history on startup
+     */
     public CluelessGUI(boolean shouldLoadHistory) {
         super("Cher's Clueless Closet");
         closet = new Closet(8);
@@ -31,7 +39,6 @@ public class CluelessGUI extends JFrame {
         mainPanel.setBorder(new EmptyBorder(15,15,15,15));
         mainPanel.setBackground(new Color(255, 240, 245));
         
-        // Add title at the top
         mainPanel.add(makeTitlePanel(), BorderLayout.NORTH);
         mainPanel.add(makeCarouselPanel(), BorderLayout.CENTER);
         mainPanel.add(makeControlPanel(), BorderLayout.SOUTH);
@@ -46,12 +53,15 @@ public class CluelessGUI extends JFrame {
         updateCarousels();
     }
 
+    /**
+     * Creates the title panel with Clausy button.
+     * @return
+     */
     private JPanel makeTitlePanel() {
         JPanel titlePanel = new JPanel(new BorderLayout(10, 10));
         titlePanel.setBackground(new Color(255, 240, 245));
         titlePanel.setBorder(new EmptyBorder(0, 0, 15, 0));
         
-        // Main title section
         JPanel titleTextPanel = new JPanel(new GridLayout(2, 1, 0, 5));
         titleTextPanel.setBackground(new Color(255, 240, 245));
         
@@ -88,16 +98,24 @@ public class CluelessGUI extends JFrame {
         return titlePanel;
     }
     
+    /**
+     * Opens the Clausy popup dialog.
+     */
     private void openClausy() {
         ClausyPopup.show(this);
     }
 
+    /**
+     *  Loads the carousels from the closet.
+     */
     private void loadQueues() {
-        // Create carousels from closet rows
-        topCarousel = new Carousel(closet, 0);  // row 0 = tops
-        bottomCarousel = new Carousel(closet, 1);  // row 1 = bottoms
+        topCarousel = new Carousel(closet, 0);  //row 0 = tops
+        bottomCarousel = new Carousel(closet, 1);  //row 1 = bottoms
     }
 
+    /**
+     * Loads saved outfit history from file.
+     */
     private void loadSavedHistory() {
         try {
             SavingHistory savedHistory = new SavingHistory();
@@ -105,7 +123,7 @@ public class CluelessGUI extends JFrame {
             
             System.out.println("Loaded " + savedOutfits.size() + " outfits from history");
             
-            // Add each saved outfit to the outfit history
+            //Add each saved outfit to the outfit history
             while (!savedOutfits.isEmpty()) {
                 Outfit outfit = savedOutfits.dequeue();
                 outfitHistory.addOutfit(outfit);
@@ -124,6 +142,10 @@ public class CluelessGUI extends JFrame {
         }
     }
 
+    /**
+     * Creates the carousel panel with top and bottom carousels.
+     * @return panel containing the carousels
+     */
     private JPanel makeCarouselPanel() {
         JPanel panel = new JPanel(new GridLayout(2, 1, 10, 10));
         panel.setBackground(new Color(255, 240, 245));
@@ -193,18 +215,27 @@ public class CluelessGUI extends JFrame {
         return panel;
     }
 
+    /**
+     * Navigates to the next item in the top carousel.
+     */
     private void navigateTop() {
         if (topCarousel.isEmpty()) return;
         topCarousel.next();
         updateCarousels();
     }
 
+    /**
+     * Navigates to the next item in the bottom carousel.
+     */
     private void navigateBottom() {
         if (bottomCarousel.isEmpty()) return;
         bottomCarousel.next();
         updateCarousels();
     }
 
+    /**
+     * Updates the displayed images and info for both carousels.
+     */
     private void updateCarousels() {
         // Update top
         if (!topCarousel.isEmpty()) {
@@ -249,6 +280,13 @@ public class CluelessGUI extends JFrame {
         }
     }
 
+    /**
+     * Loads and scales an image from the given path.
+     * @param path
+     * @param width
+     * @param height
+     * @return
+     */
     private ImageIcon loadScaledImage(String path, int width, int height) {
         try {
             ImageIcon original = new ImageIcon(path);
@@ -259,6 +297,10 @@ public class CluelessGUI extends JFrame {
         }
     }
 
+    /**
+     *  Creates the control panel with buttons and outfit label.
+     * @return
+     */
     private JPanel makeControlPanel() {
         JPanel p = new JPanel(new GridLayout(3,1,4,4));
         p.setBackground(new Color(255, 240, 245));
@@ -279,6 +321,10 @@ public class CluelessGUI extends JFrame {
         return p;
     }
 
+    /**
+     * Creates the outfit history panel.
+     * @return
+     */
     private JPanel makeHistoryPanel() {
         JPanel panel = new JPanel(new BorderLayout(5,5));
         panel.setBackground(Color.WHITE);
@@ -306,6 +352,9 @@ public class CluelessGUI extends JFrame {
         return panel;
     }
 
+    /**
+     *  Saves the current outfit to history.
+     */
     private void saveCurrentOutfit() {
         if (topCarousel.isEmpty() || bottomCarousel.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please select both a top and bottom first!");
@@ -318,6 +367,9 @@ public class CluelessGUI extends JFrame {
         JOptionPane.showMessageDialog(this, "Outfit saved! ✨");
     }
 
+    /**
+     *  Saves the outfit history to file and exits the application.
+     */
     private void saveAndExit() {
         try {
             CircularArrayQueue<Outfit> historyQueue = getHistoryQueue();
@@ -340,14 +392,24 @@ public class CluelessGUI extends JFrame {
         }
     }
 
+    /**
+     * Gets the outfit history queue.
+     * @return queue of outfits
+     */
     private CircularArrayQueue<Outfit> getHistoryQueue() {
         return outfitHistory.getHistory();
     }
 
+    /**
+     * Updates the outfit history display.
+     */
     private void updateHistoryDisplay() {
         historyDisplay.setText(outfitHistory.getHistoryDisplay());
     }
 
+    /**
+     * Seeds the closet with initial clothing items.
+     */
     private void seedCloset() {
         // Add tops
         closet.addTop(new Top("Black Floral Tank", "black", "floral", "warm", 
@@ -407,11 +469,4 @@ public class CluelessGUI extends JFrame {
         closet.addBottom(new Bottom("Green Denim Skirt", "green", "denim", "warm", 
             "images/green_denim_skirt.jpeg", "short"));
     }
-
-    /*public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            CluelessGUI gui = new CluelessGUI(true);
-            gui.setVisible(true);
-        });
-    }*/
 }
