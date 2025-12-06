@@ -1,0 +1,385 @@
+import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+/**
+ * AdjListsGraph.java
+ * Starting code to implement the GraphADT Interface.
+ * Uses an ArrayList of LinkedLists to keep track of the adjacent vertices.
+ * 
+ * @author (CS230 Staff)
+ * @version (2025.11.01)
+ */
+
+public class AdjListsGraph<T> implements GraphADT<T>
+{
+    private ArrayList<T> vertices; // Holds the vertices in the graph
+    private ArrayList<LinkedList<T>> edges; // Lists of adjacent vertices (undirected)
+
+    /**
+     * Constructor. Creates an empty graph.
+     */
+    public AdjListsGraph()
+    {
+        this.vertices = new ArrayList<T>();
+        this.edges = new ArrayList<LinkedList<T>>();
+    }
+
+    /**
+     * Creates and returns a new graph of Strings using the data found
+     * in the input tgf file.
+     * If the file does not exist, a message is printed.
+     *
+     * @param tgf_fName The name of the tgf file to read the graph from
+     * @return AdjListsGraph<String> the graph of Strings created
+     */
+    public static AdjListsGraph<String> AdjListsGraphFromFile(String tgf_fName)
+    {
+        AdjListsGraph<String> g = new AdjListsGraph<String>();
+
+        try {
+            Scanner scanner = new Scanner(new File(tgf_fName));
+
+            // read vertices
+            while (!scanner.next().equals("#")) // discard special symbol (#)
+            {
+                String token = scanner.next();
+                g.addVertex(token);
+            }
+
+            // read edges (undirected)
+            while (scanner.hasNext())
+            {
+                int v1 = scanner.nextInt();
+                int v2 = scanner.nextInt();
+                g.addEdge(v1 - 1, v2 - 1); // helper method
+            }
+            scanner.close();
+        } catch (IOException ex) {
+            System.out.println("***ERROR*** " + tgf_fName + " file could not be read.");
+        }
+        return g;
+    }
+
+    /**
+     * Helper. Inserts an edge between two vertices of the graph.
+     *
+     * @param index1 The index of the first vertex (starting from 0)
+     * @param index2 The index of the second vertex (starting from 0)
+     */
+    private void addEdge(int index1, int index2)
+    {
+        T v1 = vertices.get(index1);
+        T v2 = vertices.get(index2);
+        addEdge(v1, v2);
+    }
+
+    /**
+     * Saves the current graph into a .tgf file.
+     * @param fName The name of the file to write to
+     */
+    public void saveTGF(String fName)
+    {
+        try {
+            PrintWriter writer = new PrintWriter(new File(fName));
+            // write vertices (1-indexed)
+            for (int i = 0; i < vertices.size(); i++) {
+                writer.println((i + 1) + " " + vertices.get(i));
+            }
+            writer.println("#");
+
+            // write edges (avoid duplicates)
+            for (int i = 0; i < edges.size(); i++) {
+                for (T neighbor : edges.get(i)) {
+                    int j = vertices.indexOf(neighbor);
+                    if (i < j) // only write one direction
+                        writer.println((i + 1) + " " + (j + 1));
+                }
+            }
+            writer.close();
+        } catch (IOException ex) {
+            System.out.println("***ERROR*** " + fName + " could not be written.");
+        }
+    }
+
+    /**
+     * Returns a string representation of the graph.
+     * @return String a string representation of this graph
+     */
+    public String toString()
+    {
+        if (vertices.size() == 0) return "Graph is empty";
+
+        String result = "Vertices:\n" + vertices + "\n\nEdges:\n";
+        for (int i = 0; i < vertices.size(); i++) {
+            result += vertices.get(i) + " -- " + edges.get(i) + "\n";
+        }
+        return result;
+    }
+
+    // ===== IMPLEMENT THE FOLLOWING =====
+
+    /**
+     * Returns true if the graph is empty and false otherwise.
+     */
+    public boolean isEmpty()
+    {
+        return vertices.size() == 0;
+    }
+
+    /**
+     * Returns the number of vertices in the graph.
+     */
+    public int getNumVertices()
+    {
+        return vertices.size();
+    }
+
+    /**
+     * Returns the number of unique edges in the graph.
+     */
+    public int getNumEdges()
+    {
+        int numEdges = 0;
+        
+        for(int i = 0; i < edges.size(); i++){
+            numEdges += edges.get(i).size();
+        }
+        
+        return numEdges/2;
+    }
+
+    /**
+     * Adds the input vertex to the graph.
+     * If the vertex already exists in the graph, the graph is not changed.
+     */
+    public void addVertex(T vertex)
+    {
+        boolean exists = false;
+        
+        for(int i = 0; i < vertices.size(); i++){
+            if(vertex.equals(vertices.get(i))){
+                exists = true;
+            }
+        }
+        
+        if(!exists){
+            vertices.add(vertex);
+            LinkedList l = new LinkedList();
+            edges.add(l);
+        }
+
+    }
+
+    /**
+     * Adds an edge between vertex1 and vertex2.
+     * If either vertex does not exist, does nothing.
+     * Ensures that the edge is added symmetrically (both directions).
+     */
+    public void addEdge(T vertex1, T vertex2)
+    {
+        boolean exists1 = false;
+        boolean exists2 = false;
+        int index1 = -1;
+        int index2 = -1;
+        
+        for(int i = 0; i < vertices.size(); i++){
+            if(vertex1.equals(vertices.get(i))){
+                exists1 = true;
+                index1 = i;
+            }
+            if(vertex2.equals(vertices.get(i))){
+                exists2 = true;
+                index2 = i;
+            }
+        }
+        
+        if(exists1 && exists2 && !isEdge(vertex1, vertex2) && !vertex1.equals(vertex2)){
+            edges.get(index1).add(vertex2);
+            edges.get(index2).add(vertex1);
+        }
+
+    }
+
+    /** 
+     * Returns true iff an edge exists between the given vertices. 
+     */
+    public boolean isEdge(T vertex1, T vertex2)
+    {
+        boolean exists1 = false;
+        boolean exists2 = false;
+        int index1 = -1;
+        boolean edgeFound = false;
+        
+        for(int i = 0; i < vertices.size(); i++){
+            if(vertex1.equals(vertices.get(i))){
+                exists1 = true;
+                index1 = i;
+            }
+            if(vertex2.equals(vertices.get(i))){
+                exists2 = true;
+            }
+        }
+        
+        if(exists1 && exists2){
+            for(int i = 0; i < edges.get(index1).size(); i++){
+                if(vertex2.equals(edges.get(index1).get(i))){
+                    edgeFound = true;
+                }
+            }
+        }
+        
+        return edgeFound;
+    }
+
+    /**
+     * Returns the list of neighbors for a given vertex.
+     * If the vertex does not exist, returns null.
+     * 
+     * @param vertex The vertex whose neighbors are to be returned
+     * @return A list of vertices adjacent to the given vertex
+     */
+    public java.util.List<T> getNeighbors(T vertex)
+    {
+        boolean exists = false;
+        int index = -1;
+        ArrayList r = new ArrayList();
+        
+        for(int i = 0; i < vertices.size(); i++){
+            if(vertex.equals(vertices.get(i))){
+                exists = true;
+                index = i;
+            }
+        }
+        
+        if(!exists){
+            return null;
+        }
+        
+        for(int i = 0; i < edges.get(index).size(); i++){
+            
+            r.add(edges.get(index).get(i));
+        }
+        
+        ArrayList r2 = new ArrayList();
+        r2 = (ArrayList) r.clone();
+        
+        return r2;
+    }
+
+   
+    /**
+     * Removes the input vertex from the graph.
+     * If the input vertex does not belong in the graph, the graph is not changed.
+     */
+    public void removeVertex(T vertex)
+    {
+        boolean exists = false;
+        int index = -1;
+        
+        for(int i = 0; i < vertices.size(); i++){
+            if(vertex.equals(vertices.get(i))){
+                exists = true;
+                index = i;
+            }
+        }
+        
+        if(exists){
+            vertices.remove(index);
+            edges.remove(index);
+        }
+        
+        for(int i = 0; i < edges.size(); i++){
+            for(int j = 0; j < edges.get(i).size(); j++){
+                if(vertex.equals(edges.get(i).get(j))){
+                    edges.get(i).remove(j);
+                }
+            }
+        }
+        
+
+    }
+
+    /**
+     * Removes the edge between vertex1 and vertex2.
+     * If vertex1 or vertex2, or the edge itself, does not exist, does nothing.
+     */
+    public void removeEdge(T vertex1, T vertex2)
+    {
+        boolean exists1 = false;
+        boolean exists2 = false;
+        int index1 = -1;
+        int index2 = -1;
+        
+        for(int i = 0; i < vertices.size(); i++){
+            if(vertex1.equals(vertices.get(i))){
+                exists1 = true;
+                index1 = i;
+            }
+            if(vertex2.equals(vertices.get(i))){
+                exists2 = true;
+                index2 = i;
+            }
+        }
+        
+        if(exists1 && exists2 && isEdge(vertex1, vertex2)){
+            for(int i = 0; i < edges.get(index1).size(); i++){
+                if(vertex2.equals(edges.get(index1).get(i))){
+                    edges.get(index1).remove(i);
+                }
+            }
+            for(int i = 0; i < edges.get(index2).size(); i++){
+                if(vertex1.equals(edges.get(index2).get(i))){
+                    edges.get(index2).remove(i);
+                }
+            }
+        }
+
+    }
+
+
+    /**
+     * Very Basic Driver program.
+     */
+    public static void main(String args[])
+    {
+        System.out.println("TESTING METHODS");
+        System.out.println("_________________");
+        AdjListsGraph<String> g = new AdjListsGraph<String>();
+        System.out.println("New graph created.");
+        System.out.println("isEmpty() Expect true. Got: " + g.isEmpty());
+
+        System.out.println("Testing addVertex()");
+        g.addVertex("A"); g.addVertex("B");
+        g.addVertex("C"); g.addVertex("D");
+        g.addVertex("A"); // duplicate
+
+        System.out.println("isEmpty() Expect false. Got: " + g.isEmpty());
+        System.out.println("Printing graph with 4 vertices and no edges:\n" + g);
+
+        System.out.println("Testing addEdge()");
+        g.addEdge("A", "B");
+        g.addEdge("A", "C");
+        g.addEdge("C", "B");
+        g.addEdge("C", "Z"); // invalid
+        g.addEdge("C", "B"); // duplicate
+        System.out.println("Printing graph with edges: A-B, A-C, B-C.\nGot:\n" + g);
+
+        System.out.println("Testing getNeighbors()");
+        System.out.println("Neighbors of A: " + g.getNeighbors("A"));
+        System.out.println("Neighbors of B: " + g.getNeighbors("B"));
+        System.out.println("Neighbors of D (no edges): " + g.getNeighbors("D"));
+
+        System.out.println("Testing removeVertex()");
+        g.removeVertex("K"); // invalid
+        System.out.println("Expect unchanged graph:\n" + g);
+
+        g.removeVertex("A");
+        System.out.println("Expect vertices [B, C, D] and edge B--C only:\n" + g);
+
+        g.saveTGF("out_undirected.tgf");
+    }
+}
+
