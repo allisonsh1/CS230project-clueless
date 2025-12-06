@@ -1,2 +1,0 @@
-Black Gingham Tank|black|gingham|warm|images/black_gingham_tank.jpeg|sleeveless|Blue Jeans|blue|denim|warm|images/blue_jeans.jpeg|full
-Black Gingham Tank|black|gingham|warm|images/black_gingham_tank.jpeg|sleeveless|Dark Jeans|dark|denim|warm|images/dark_jeans.jpeg|full
