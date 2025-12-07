@@ -1,0 +1,2 @@
+Car Graphic Tee|white|graphic|warm|images/car_graphic_tee.jpeg|short|Blue Jeans|blue|denim|warm|images/blue_jeans.jpeg|full
+Brown Lace Tank|brown|lace|warm|images/brown_lace_tank.jpeg|sleeveless|Green Cargos|green|solid|warm|images/green_cargos.jpeg|full
