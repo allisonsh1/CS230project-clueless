@@ -3,6 +3,8 @@ import javafoundations.CircularArrayQueue;
 /**
  * Manages a history of saved outfits using a CircularArrayQueue.
  * Maintains a maximum of 7 outfits and automatically removes the oldest when capacity is reached.
+ * 
+ * @author Allison
  */
 public class OutfitHistory {
     private CircularArrayQueue<Outfit> history;
@@ -26,7 +28,6 @@ public class OutfitHistory {
         
         history.enqueue(outfit);
     }
-    
     
     /**
      * Returns a formatted string of all outfits in the history.

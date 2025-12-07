@@ -4,6 +4,7 @@ import javafoundations.LinkedBinaryTree;
 /**
  * OutfitQuiz uses a decision tree to recommend outfits based on user preferences.
  * Users answer yes/no questions to navigate through the tree and find a suitable outfit.
+ * @author Rue
  */
 public class OutfitQuiz {
     protected LinkedBinaryTree<String> dTree;

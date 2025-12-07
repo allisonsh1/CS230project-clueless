@@ -5,37 +5,31 @@ import java.io.File;
 
 /**
  * Welcome screen that allows users to either start fresh or load saved history
+ * @author Vivian & AI
  */
 public class WelcomeWindow extends JFrame {
     
+    /**
+     * Constructor for WelcomeWindow
+     */
     public WelcomeWindow() {
         super("Welcome to Cher's Closet");
         
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(500, 400);
-        setLocationRelativeTo(null); // Center on screen
+        setLocationRelativeTo(null);
         setResizable(false);
         
-        // Main panel with gradient-like background
         JPanel mainPanel = new JPanel(new BorderLayout(20, 20));
         mainPanel.setBackground(new Color(255, 240, 245));
         mainPanel.setBorder(new EmptyBorder(30, 40, 30, 40));
         
-        // Title section
         JPanel titlePanel = new JPanel(new GridLayout(3, 1, 5, 5));
         titlePanel.setBackground(new Color(255, 240, 245));
-        
-       /* JLabel titleLabel = new JLabel("✨ Cher's Clueless Closet ✨", SwingConstants.CENTER);
-        titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
-        //titleLabel.setForeground(Color.BLACK);
-        titleLabel.setForeground(new Color(30, 30, 30)); // dark charcoal
-        */
         
         JLabel titleLabel = new JLabel("Cher's Clueless Closet", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
         titleLabel.setForeground(new Color(115, 56, 133));
-        
-
         
         JLabel subtitleLabel = new JLabel("Your Digital Wardrobe Assistant", SwingConstants.CENTER);
         subtitleLabel.setFont(new Font("Arial", Font.ITALIC, 16));
@@ -49,30 +43,30 @@ public class WelcomeWindow extends JFrame {
         titlePanel.add(subtitleLabel);
         titlePanel.add(welcomeLabel);
         
-        // Button section
         JPanel buttonPanel = new JPanel(new GridLayout(2, 1, 15, 15));
         buttonPanel.setBackground(new Color(255, 240, 245));
         buttonPanel.setBorder(new EmptyBorder(30, 20, 30, 20));
         
-        // Start Fresh button
         JButton startFreshBtn = createStyledButton(
             "🆕 Start Fresh",
             "Begin with an empty outfit history",
             new Color(200, 150, 250),
             Color.WHITE
         );
+
         startFreshBtn.addActionListener(e -> startApplication(false));
         
-        // Load History button
+        //History button
         JButton loadHistoryBtn = createStyledButton(
             "📂 Load Previous History",
             "Continue from where you left off",
             new Color(150, 100, 200),
             Color.WHITE
         );
+
         loadHistoryBtn.addActionListener(e -> startApplication(true));
         
-        // Check if history file exists and disable button if not
+        //Check if history file exists and disable button if not
         File historyFile = new File("history.txt");
         if (!historyFile.exists()) {
             loadHistoryBtn.setEnabled(false);
@@ -119,7 +113,7 @@ public class WelcomeWindow extends JFrame {
         button.setPreferredSize(new Dimension(400, 80));
         button.setCursor(new Cursor(Cursor.HAND_CURSOR));
         
-        // Add hover effect
+        //Hover effect
         button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 if (button.isEnabled()) {
@@ -151,6 +145,9 @@ public class WelcomeWindow extends JFrame {
         });
     }
     
+    /**
+     * Main method to launch the welcome window / start the program
+     */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             WelcomeWindow welcome = new WelcomeWindow();
