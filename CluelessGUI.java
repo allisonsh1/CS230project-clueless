@@ -12,6 +12,7 @@ public class CluelessGUI extends JFrame {
     private Carousel topCarousel;
     private Carousel bottomCarousel;
     private OutfitHistory outfitHistory;
+    private Matcher matcher;
     private JLabel topImageLabel;
     private JLabel bottomImageLabel;
     private JLabel topInfoLabel;
@@ -27,6 +28,7 @@ public class CluelessGUI extends JFrame {
         super("Cher's Clueless Closet");
         closet = new Closet(8);
         outfitHistory = new OutfitHistory();
+        matcher = new Matcher();
         seedCloset();
         loadQueues();
 
@@ -362,6 +364,17 @@ public class CluelessGUI extends JFrame {
         }
         
         Outfit newOutfit = new Outfit((Top)topCarousel.current(), (Bottom)bottomCarousel.current());
+        
+        // Check if the outfit clashes
+        if (matcher.clashes(newOutfit)) {
+            JOptionPane.showMessageDialog(this, 
+                "⚠️ Mismatch! Try again.\n\nThis outfit has clashing colors, patterns, or seasons.", 
+                "Outfit Mismatch", 
+                JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // If no clashes, save the outfit
         outfitHistory.addOutfit(newOutfit);
         updateHistoryDisplay();
         JOptionPane.showMessageDialog(this, "Outfit saved! ✨");
