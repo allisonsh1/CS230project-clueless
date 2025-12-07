@@ -29,14 +29,6 @@ public class Outfit {
 
 
     /**
-     * Checks if the outfit is a match
-     * @return
-     */
-    public boolean isMatch() {
-        return false;
-    }
-
-    /**
      * String representation of Outfit
      * @return string representation of Outfit
      */

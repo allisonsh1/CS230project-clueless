@@ -52,6 +52,30 @@ public class ClosetDriver {
         System.out.println("Saved: " + outfit2);
         System.out.println();
         
+        System.out.println("TESTING OUTFIT MATCHING WITH MATCHER");
+        Matcher matcher = new Matcher();
+        System.out.println();
+        
+        System.out.println("Testing outfit 1:");
+        System.out.println(outfit1);
+        boolean clashes1 = matcher.clashes(outfit1);
+        if (clashes1) {
+            System.out.println("Result: CLASHES!");
+        } else {
+            System.out.println("Result: MATCHES!");
+        }
+        System.out.println();
+        
+        System.out.println("Testing outfit 2:");
+        System.out.println(outfit2);
+        boolean clashes2 = matcher.clashes(outfit2);
+        if (clashes2) {
+            System.out.println("Result: CLASHES!");
+        } else {
+            System.out.println("Result: MATCHES!");
+        }
+        System.out.println();
+
         // Display history
         System.out.println("Final Display:");
         System.out.println(history.getHistoryDisplay());
