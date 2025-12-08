@@ -40,6 +40,29 @@ public class Carousel {
         current = items.first();
         
     }
+
+    /**
+     * Rotates the carousel backward by one position
+     * The current item moves to the front and the last item becomes current.
+     */
+    public void previous() {
+        int s = items.size();
+        CircularArrayQueue<Clothing> temp = new CircularArrayQueue<>();
+
+        for (int i = 0; i < s - 1; i++) {
+            temp.enqueue(items.dequeue());
+        }
+
+        Clothing last = items.dequeue();
+        items.enqueue(last);
+        
+        while (!temp.isEmpty()) {
+            items.enqueue(temp.dequeue());
+        }
+
+        current = last;
+    
+    }
     
     /**
      * Gets the current clothing item.

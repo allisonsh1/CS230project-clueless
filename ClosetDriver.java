@@ -33,6 +33,11 @@ public class ClosetDriver {
         bottomCarousel.next();
         System.out.println("Current bottom: " + bottomCarousel.current());
         System.out.println();
+
+        System.out.println("Rotating back to last top:");
+        bottomCarousel.previous();
+        System.out.println("Current top: " + topCarousel.current());
+        System.out.println();
         
 
         System.out.println("OUTFIT HISTORY");
