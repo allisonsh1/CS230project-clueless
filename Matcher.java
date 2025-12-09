@@ -3,7 +3,7 @@ import javafoundations.AdjListsGraph;
 
 /**
  * Matcher class to determine if an outfit has clashing elements based on color, pattern, and season using graphs.
- * @author Rue
+ * @author Rue & Vivian
  */
 public class Matcher {
     protected AdjListsGraph<String> clashesC; //color clashes
@@ -17,33 +17,55 @@ public class Matcher {
     public Matcher() {
         clashesC = new AdjListsGraph<String>();
         clashesP = new AdjListsGraph<String>();
-        clashesS = new AdjListsGraph<String>(); // FIXED: was clashesP again
+        clashesS = new AdjListsGraph<String>();
 
-        // Pattern clashes
-        clashesP.addVertex("striped");
-        clashesP.addVertex("polka dots");
-        clashesP.addVertex("denim");
-        clashesP.addVertex("flannel");
+        //Pattern clashes
+        clashesP.addVertex("stripe");
+        clashesP.addVertex("denim"); // bottom attribute
+        clashesP.addVertex("floral"); // new
+        clashesP.addVertex("gingham"); // new
+        clashesP.addVertex("graphic"); // new
+        clashesP.addVertex("lace"); // new
+        clashesC.addVertex("solid"); // new bottom and top attribute
+        clashesP.addVertex("cable"); // new
+        clashesP.addVertex("floral"); // new
 
-        clashesP.addEdge("striped", "polka dots");
-        clashesP.addEdge("denim", "flannel");
-        clashesP.addEdge("polka dots", "flannel");
-        clashesP.addEdge("striped", "flannel");
+        //changed edges to match bottom vs top attributes 
+        clashesP.addEdge("stripe", "denim");
+        clashesP.addEdge("denim", "stripe");
+        clashesP.addEdge("floral", "solid");
+        clashesP.addEdge("solid", "floral");
+        clashesP.addEdge("lace", "denim");
+        clashesP.addEdge("denim", "lace");
+        clashesP.addEdge("cable", "denim");
+        clashesP.addEdge("denim", "cable");
 
-        // Color clashes
+        //Color clashes
         clashesC.addVertex("green");
         clashesC.addVertex("red");
         clashesC.addVertex("brown");
-        clashesC.addVertex("neon yellow");
+        clashesC.addVertex("black"); // new
+        clashesC.addVertex("blue"); // new
+        clashesC.addVertex("cream"); // new
+        clashesC.addVertex("white"); // new
+        clashesC.addVertex("grey"); // new
+        clashesC.addVertex("darkgrey"); // new
+        clashesC.addVertex("multicolor"); // new
 
+        //only some common color clashes are added
         clashesC.addEdge("green", "red");
+        clashesC.addEdge("red", "green");
         clashesC.addEdge("brown", "red");
-        clashesC.addEdge("brown", "neon yellow");
+        clashesC.addEdge("red", "brown");
+        clashesC.addEdge("brown", "grey");
+        clashesC.addEdge("grey", "brown");
 
         // Season clashes
         clashesS.addVertex("cold");
         clashesS.addVertex("warm");
+
         clashesS.addEdge("cold", "warm");
+        clashesS.addEdge("warm", "cold");
     }
 
     /**
