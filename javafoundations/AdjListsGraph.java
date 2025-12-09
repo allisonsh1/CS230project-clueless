@@ -169,7 +169,7 @@ public class AdjListsGraph<T> implements GraphADT<T>
         
         if(!exists){
             vertices.add(vertex);
-            LinkedList l = new LinkedList();
+            LinkedList<T> l = new LinkedList<T>();
             edges.add(l);
         }
 
@@ -247,7 +247,7 @@ public class AdjListsGraph<T> implements GraphADT<T>
     {
         boolean exists = false;
         int index = -1;
-        ArrayList r = new ArrayList();
+        ArrayList<T> r = new ArrayList<T>();
         
         for(int i = 0; i < vertices.size(); i++){
             if(vertex.equals(vertices.get(i))){
@@ -265,8 +265,8 @@ public class AdjListsGraph<T> implements GraphADT<T>
             r.add(edges.get(index).get(i));
         }
         
-        ArrayList r2 = new ArrayList();
-        r2 = (ArrayList) r.clone();
+        ArrayList<T> r2 = new ArrayList<T>();
+        r2 = (ArrayList<T>) r.clone();
         
         return r2;
     }
@@ -339,49 +339,6 @@ public class AdjListsGraph<T> implements GraphADT<T>
             }
         }
 
-    }
-
-
-    /**
-     * Very Basic Driver program.
-     */
-    public static void main(String args[])
-    {
-        System.out.println("TESTING METHODS");
-        System.out.println("_________________");
-        AdjListsGraph<String> g = new AdjListsGraph<String>();
-        System.out.println("New graph created.");
-        System.out.println("isEmpty() Expect true. Got: " + g.isEmpty());
-
-        System.out.println("Testing addVertex()");
-        g.addVertex("A"); g.addVertex("B");
-        g.addVertex("C"); g.addVertex("D");
-        g.addVertex("A"); // duplicate
-
-        System.out.println("isEmpty() Expect false. Got: " + g.isEmpty());
-        System.out.println("Printing graph with 4 vertices and no edges:\n" + g);
-
-        System.out.println("Testing addEdge()");
-        g.addEdge("A", "B");
-        g.addEdge("A", "C");
-        g.addEdge("C", "B");
-        g.addEdge("C", "Z"); // invalid
-        g.addEdge("C", "B"); // duplicate
-        System.out.println("Printing graph with edges: A-B, A-C, B-C.\nGot:\n" + g);
-
-        System.out.println("Testing getNeighbors()");
-        System.out.println("Neighbors of A: " + g.getNeighbors("A"));
-        System.out.println("Neighbors of B: " + g.getNeighbors("B"));
-        System.out.println("Neighbors of D (no edges): " + g.getNeighbors("D"));
-
-        System.out.println("Testing removeVertex()");
-        g.removeVertex("K"); // invalid
-        System.out.println("Expect unchanged graph:\n" + g);
-
-        g.removeVertex("A");
-        System.out.println("Expect vertices [B, C, D] and edge B--C only:\n" + g);
-
-        g.saveTGF("out_undirected.tgf");
     }
 }
 
