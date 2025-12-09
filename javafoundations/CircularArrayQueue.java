@@ -64,7 +64,11 @@ public class CircularArrayQueue<T> implements Queue<T> {
    
       return queue[front];
    }
-
+   /**
+    * Finds the last
+    * @return
+    * @throws EmptyCollectionException
+    */
    public T last() throws EmptyCollectionException {
       if (isEmpty())
          throw new EmptyCollectionException("queue");

@@ -173,8 +173,8 @@ public class CluelessGUI extends JFrame {
         topNav.setBackground(Color.WHITE);
         JButton topPrev = new JButton("◀ Previous");
         JButton topNext = new JButton("Next ▶");
-        topPrev.addActionListener(e -> navigateTop());
-        topNext.addActionListener(e -> navigateTop());
+        topPrev.addActionListener(e -> topBackward());
+        topNext.addActionListener(e -> topForward());
         topInfoLabel = new JLabel("Item info");
         topInfoLabel.setFont(new Font("Arial", Font.PLAIN, 12));
         topNav.add(topPrev);
@@ -203,8 +203,8 @@ public class CluelessGUI extends JFrame {
         bottomNav.setBackground(Color.WHITE);
         JButton bottomPrev = new JButton("◀ Previous");
         JButton bottomNext = new JButton("Next ▶");
-        bottomPrev.addActionListener(e -> navigateBottom());
-        bottomNext.addActionListener(e -> navigateBottom());
+        bottomPrev.addActionListener(e -> bottomBackward());
+        bottomNext.addActionListener(e -> bottomForward());
         bottomInfoLabel = new JLabel("Item info");
         bottomInfoLabel.setFont(new Font("Arial", Font.PLAIN, 12));
         bottomNav.add(bottomPrev);
@@ -220,20 +220,37 @@ public class CluelessGUI extends JFrame {
     /**
      * Navigates to the next item in the top carousel.
      */
-    private void navigateTop() {
+    private void topForward() {
         if (topCarousel.isEmpty()) return;
         topCarousel.next();
         updateCarousels();
     }
 
     /**
+     * Navigates to the next item in the top carousel.
+     */
+        private void topBackward() {
+            if (topCarousel.isEmpty()) return;
+            topCarousel.previous();
+            updateCarousels();
+        }
+
+    /**
      * Navigates to the next item in the bottom carousel.
      */
-    private void navigateBottom() {
+    private void bottomForward() {
         if (bottomCarousel.isEmpty()) return;
         bottomCarousel.next();
         updateCarousels();
     }
+        /**
+     * Navigates to the next item in the bottom carousel.
+     */
+        private void bottomBackward() {
+            if (bottomCarousel.isEmpty()) return;
+            bottomCarousel.previous();
+            updateCarousels();
+        }
 
     /**
      * Updates the displayed images and info for both carousels.

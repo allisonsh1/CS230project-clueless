@@ -42,7 +42,7 @@ public class Carousel {
     }
 
     /**
-     * Rotates the carousel backward by one position
+     * Rotates the carousel backward
      * The current item moves to the front and the last item becomes current.
      */
     public void previous() {
